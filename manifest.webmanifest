@@ -1,0 +1,26 @@
+{
+  "name": "LexDICOM — Medicolegal DICOM Workstation",
+  "short_name": "LexDICOM",
+  "description": "Local-First RadiAnt-Style Medicolegal DICOM Viewer, Longitudinal Comparator & Court Exhibit Studio",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "landscape",
+  "background_color": "#0b0e14",
+  "theme_color": "#0b0e14",
+  "categories": ["medical", "productivity", "utilities"],
+  "icons": [
+    {
+      "src": "./icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "./icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
