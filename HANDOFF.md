@@ -29,6 +29,7 @@
 
 ## 4. Environment & Cross-Machine Notes (`AMdesk` ↔ `Mobile1`)
 - **Zero Secrets Needed:** Runs 100% locally. Dev port `5179`, preview port `4179`.
+- **GitHub Remote Status on `Mobile1`:** Local `main` repository initialized and committed cleanly with `origin` set to `https://github.com/alexmohit825/LexDICOM.git`. Note: `Mobile1`'s Windows Git Credential Manager is not yet signed in to GitHub (`GCM_CREDENTIAL_FOUND: False`), so once signed in via browser prompt (`git -C "C:\Users\mohal\Documents\antigravity\LexDICOM" push -u origin main` after creating `alexmohit825/LexDICOM` or running `gh auth login`), remote sync will push immediately.
 - **Windows PowerShell Note:** Invoke `npm.cmd` (not `npm.ps1`) when PowerShell script execution policy is restricted, and always pass `--prefix "C:\Users\mohal\Documents\antigravity\LexDICOM"` or `git -C "C:\Users\mohal\Documents\antigravity\LexDICOM"` (never raw `cd`).
 - **Quick Recovery on Another PC:** `git clone https://github.com/alexmohit825/LexDICOM "C:\Users\mohal\Documents\antigravity\LexDICOM"`, then `npm.cmd --prefix "C:\Users\mohal\Documents\antigravity\LexDICOM" install` and `npm.cmd --prefix "C:\Users\mohal\Documents\antigravity\LexDICOM" run dev`.
 

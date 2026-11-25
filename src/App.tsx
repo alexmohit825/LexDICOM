@@ -606,12 +606,28 @@ export const App: React.FC = () => {
           onAutoCompareTimepoints={() => {
             if (studies.length < 2) return;
             const first = studies[0];
-            const last = studies[studies.length - 1];
-            if (!first.series[0] || !last.series[0]) return;
+            const firstSeries = first.series[0];
+            if (!firstSeries) return;
+            // Match same modality & orientation plane across latest comparable study (e.g. MR SAG 2022 vs MR SAG 2024)
+            let targetStudy = studies[studies.length - 1];
+            let targetSeries = targetStudy.series[0];
+            for (let i = studies.length - 1; i >= 1; i--) {
+              const candidate = studies[i].series.find(
+                (s) =>
+                  s.modality === firstSeries.modality &&
+                  s.orientationPlane === firstSeries.orientationPlane
+              );
+              if (candidate) {
+                targetStudy = studies[i];
+                targetSeries = candidate;
+                break;
+              }
+            }
+            if (!targetSeries) return;
             setMaximizedPanelIdx(null);
             setGridLayout('1x2');
-            hangSeriesInPanel(0, first.studyInstanceUID, first.series[0].seriesInstanceUID);
-            hangSeriesInPanel(1, last.studyInstanceUID, last.series[0].seriesInstanceUID);
+            hangSeriesInPanel(0, first.studyInstanceUID, firstSeries.seriesInstanceUID);
+            hangSeriesInPanel(1, targetStudy.studyInstanceUID, targetSeries.seriesInstanceUID);
           }}
           onClearAllStudies={() => {
             clearDecodeCache();

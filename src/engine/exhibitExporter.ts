@@ -470,10 +470,15 @@ export function renderPanelToContext(
     ctx.stroke();
 
     ctx.fillStyle = '#f8fafc';
-    ctx.font = `700 ${Math.round(13 * scaleFactor)}px "Inter", "Segoe UI", system-ui, sans-serif`;
+    ctx.font = `700 ${Math.round(12.5 * scaleFactor)}px "Inter", "Segoe UI", system-ui, sans-serif`;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.fillText(activeBanner.toUpperCase(), boxX + boxW / 2, boxY + bannerHeight / 2);
+    ctx.fillText(
+      activeBanner.toUpperCase(),
+      boxX + boxW / 2,
+      boxY + bannerHeight / 2,
+      Math.max(60, boxW - 20 * scaleFactor)
+    );
     ctx.textAlign = 'left';
     ctx.textBaseline = 'alphabetic';
   }
@@ -481,7 +486,7 @@ export function renderPanelToContext(
   // 6. RadiAnt DICOM Corner Overlays (with 1-Click PHI Scrubber compliance)
   if (showTextOverlay && study && series) {
     const pad = Math.round(10 * scaleFactor);
-    const smallFont = Math.round(11.5 * scaleFactor);
+    const smallFont = Math.round(11 * scaleFactor);
     const lineH = Math.round(15 * scaleFactor);
     ctx.font = `500 ${smallFont}px "JetBrains Mono", "Consolas", monospace`;
     ctx.fillStyle = 'rgba(226, 232, 240, 0.9)';
@@ -492,8 +497,8 @@ export function renderPanelToContext(
     // Top-Left: Patient & Study
     const tlLines = exhibit.scrubPhi
       ? [
-          exhibit.caseCaption || 'REDACTED MEDICOLegal EXHIBIT',
-          `Study Date: ${study.studyDateFormatted}`,
+          exhibit.caseCaption || 'REDACTED EXHIBIT',
+          `Date: ${study.studyDateFormatted}`,
           `${series.modality} · ${series.seriesDescription}`,
         ]
       : [
@@ -502,17 +507,19 @@ export function renderPanelToContext(
           `${study.studyDateFormatted} · ${series.seriesDescription}`,
         ];
 
+    const tlMaxW = Math.max(80, boxW * 0.58 - pad);
     tlLines.forEach((line, idx) => {
-      ctx.fillText(line, boxX + pad, topY + idx * lineH);
+      ctx.fillText(line, boxX + pad, topY + idx * lineH, tlMaxW);
     });
 
     // Top-Right: Institution (hidden when PHI scrubbed) + Orientation
     const trLines = exhibit.scrubPhi
       ? [`Plane: ${series.orientationPlane}`]
       : [study.institutionName || 'Local DICOM Archive', `Plane: ${series.orientationPlane}`];
+    const trMaxW = Math.max(60, boxW * 0.38 - pad);
     ctx.textAlign = 'right';
     trLines.forEach((line, idx) => {
-      ctx.fillText(line, boxX + boxW - pad, topY + idx * lineH);
+      ctx.fillText(line, boxX + boxW - pad, topY + idx * lineH, trMaxW);
     });
 
     // Bottom-Left: Slice & Geometry
@@ -639,7 +646,7 @@ export async function exportCourtExhibitImage(params: {
     ctx.fillStyle = '#f8fafc';
     ctx.font = '700 30px "Inter", "Segoe UI", system-ui, sans-serif';
     ctx.fillText(
-      exhibit.exhibitTitle || 'MEDICOLegal RADIOLOGY EXHIBIT',
+      exhibit.exhibitTitle || 'MEDICOLEGAL RADIOLOGY EXHIBIT',
       36,
       exhibit.caseCaption ? 42 : 56
     );
